@@ -1,7 +1,9 @@
 package com.sgc.Controllers;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sgc.Model.entity.Rol;
 import com.sgc.Model.entity.Usuario;
+import com.sgc.Model.service.IRol;
 import com.sgc.Model.service.IUsuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,21 @@ public class UsuarioController {
     //llamamos a nuestro servicio
     @Autowired
     private IUsuario usuarioService;
+    @Autowired
+    private IRol rolService;
 
     /**METODOS DEL IUsuario **/
     @PostMapping("usuario")
     public Usuario create(@RequestBody Usuario usuario){
+        // Buscas el Rol en la base de datos por el id
+        Rol rol = rolService.findById(
+            usuario.getRol()
+        );
+        
+        // Asignas el objeto Rol al Usuario
+        usuario.setRol(rol);
+        
+        // Guardas el Usuario
         return usuarioService.save(usuario);
     }
 
