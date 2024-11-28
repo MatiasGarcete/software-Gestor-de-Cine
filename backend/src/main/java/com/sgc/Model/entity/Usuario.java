@@ -43,6 +43,8 @@ public class Usuario implements Serializable{
     //------Obtener los atributos-----------
     // Getters y Setters
     public Integer getRol() {
+        //rol es un objeto que nos trae tanto la id como el nombre
+        //rol.getIdrol para que nos de el valor interger
         return rol.getIdrol();
     }
 }

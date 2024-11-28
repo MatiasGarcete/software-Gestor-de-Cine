@@ -31,12 +31,10 @@ public class UsuarioController {
     public Usuario create(@RequestBody Usuario usuario){
         // Buscas el Rol en la base de datos por el id
         Rol rol = rolService.findById(
-            usuario.getRol()
+            usuario.getRol() //El metodo se detalla en Entity -> usuario
         );
-        
-        // Asignas el objeto Rol al Usuario
+        // Asignas el objeto Rol -idRol- al Usuario
         usuario.setRol(rol);
-        
         // Guardas el Usuario
         return usuarioService.save(usuario);
     }
