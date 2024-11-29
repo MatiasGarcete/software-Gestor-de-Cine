@@ -5,16 +5,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sgc.Model.dao.PeliculaDao;
+import com.sgc.Model.dto.PeliculaDto;
 import com.sgc.Model.entity.Pelicula;
-import com.sgc.Model.service.IPelicula;
+import com.sgc.Model.service.IPeliculaService;
 
 @Service
-public class PeliculaImpl implements IPelicula{
+public class PeliculaImpl implements IPeliculaService{
     @Autowired //nos deja instanciar la clase PeliculaDao
     private PeliculaDao peliculaDao;
+
+
+    @Override
+    public boolean existsBy(Integer id){
+        return peliculaDao.existsById(id);
+    }
+
     @Transactional
     @Override
-    public Pelicula save(Pelicula pelicula) {
+    public Pelicula save(PeliculaDto peliculaDto) {
+        Pelicula pelicula = Pelicula.builder()
+            .idPelicula(peliculaDto.getIdPelicula())
+            .nombrePelicula(peliculaDto.getNombrePelicula())
+            .tituloOriginal(peliculaDto.getTituloOriginal())
+            .duracion(peliculaDto.getDuracion())
+        .build();
+
         return peliculaDao.save(pelicula);
     }
 
@@ -22,9 +37,9 @@ public class PeliculaImpl implements IPelicula{
     @Override
     public Pelicula findById(Integer id) {
         return peliculaDao.findById(id).orElse(null);
-           }
+    }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Iterable<Pelicula> findAll() {
         return peliculaDao.findAll();

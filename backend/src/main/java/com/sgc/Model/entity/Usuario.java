@@ -1,50 +1,45 @@
-package com.sgc.Model.entity;
+ package com.sgc.Model.entity;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data 
+import java.io.Serializable;
+
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Entity
 @Table(name = "usuario")
-public class Usuario implements Serializable{
-    //Atributos de la Tabla
-    @Id //Indicamos que es una ID
-    @Column(name = "idusuario", nullable = false) //Nombre que reprensetan en la Tabla
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Autoincrementable
-    private Integer idusuario;
+public class Usuario implements Serializable {
 
-    @Column(name = "nombre", nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idusuario", nullable = false, unique = true)
+    private Integer idUsuario;
+
+    @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
-    
-    @Column(name = "correo", nullable = false)
+
+    @Column(name = "apellido", length = 100, nullable = false)
+    private String apellido;
+
+    @Column(name = "password", length = 45, nullable = false)
+    private String password;
+
+    @Column(name = "correo", length = 45, nullable = false)
     private String correo;
 
-    // Relación Many-to-One con la entidad Rol
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idrol", referencedColumnName = "idrol", nullable = false)
-    private Rol rol;
+    // @ManyToOne(fetch = FetchType.LAZY) // Relación muchos a uno
+    // @JoinColumn(name = "idrol", nullable = false) // Clave foránea
+    // private Rol rol;
 
-    //------Obtener los atributos-----------
-    // Getters y Setters
-    public Integer getRol() {
-        //rol es un objeto que nos trae tanto la id como el nombre
-        //rol.getIdrol para que nos de el valor interger
-        return rol.getIdrol();
-    }
+    // Getters y setters
 }
+
