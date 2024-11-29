@@ -22,15 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PeliculaController {
     @Autowired
     private IPelicula peliculaService;
+
     @PostMapping("pelicula")
-    public Pelicula create(@RequestBody Pelicula pelicula) {
-        
-        
+    public Pelicula create(@RequestBody Pelicula pelicula) {    
         return peliculaService.save(pelicula);
     }
     @PutMapping("pelicula")
     public Pelicula update(@RequestBody Pelicula pelicula) {
-        
         return peliculaService.save(pelicula);
     }
 

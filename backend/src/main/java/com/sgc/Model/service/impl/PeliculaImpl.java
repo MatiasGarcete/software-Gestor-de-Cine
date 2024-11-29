@@ -11,29 +11,29 @@ import com.sgc.Model.service.IPelicula;
 @Service
 public class PeliculaImpl implements IPelicula{
     @Autowired //nos deja instanciar la clase PeliculaDao
-    private PeliculaDao peliculaService;
+    private PeliculaDao peliculaDao;
     @Transactional
     @Override
     public Pelicula save(Pelicula pelicula) {
-        return peliculaService.save(pelicula);
+        return peliculaDao.save(pelicula);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Pelicula findById(Integer id) {
-        return peliculaService.findById(id).orElse(null);
+        return peliculaDao.findById(id).orElse(null);
            }
 
     @Transactional
     @Override
     public Iterable<Pelicula> findAll() {
-        return peliculaService.findAll();
+        return peliculaDao.findAll();
     }
 
     @Transactional
     @Override
     public void delete(Pelicula pelicula) {
-        peliculaService.delete(pelicula);
+        peliculaDao.delete(pelicula);
     }
     
 }
