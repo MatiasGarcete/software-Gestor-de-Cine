@@ -19,7 +19,6 @@ public class FuncionImpl implements IFuncionService {
     private FuncionDao funcionDao;
     @Autowired
     private IPeliculaService peliculaService;
-    
 
     @Transactional
     @Override

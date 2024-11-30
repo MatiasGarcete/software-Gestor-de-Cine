@@ -16,4 +16,5 @@ public class ReservaDto implements Serializable{
     private Integer cantidadEntradas;
 
     private Integer idUsuario;
+    private Integer idFuncion;
 }

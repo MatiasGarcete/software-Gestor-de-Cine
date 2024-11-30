@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.sgc.Model.entity.Pelicula;
 import com.sgc.Model.entity.Reserva;
 
 import lombok.Builder;
@@ -23,5 +22,7 @@ public class FuncionDto implements Serializable {
     private float precio;
 
     private Integer idPelicula;  // Relación con las reservas
+    private List<Reserva> reservas;  // Relación con las reservas
+
 
 }

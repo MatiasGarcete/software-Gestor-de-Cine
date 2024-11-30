@@ -39,6 +39,7 @@ public class ReservaController {
                                 .fechaReserva(reservaSave.getFechaReserva())
                                 .cantidadEntradas(reservaSave.getCantidadEntradas())
                                 .idUsuario(reservaDto.getIdUsuario())
+                                .idFuncion(reservaDto.getIdFuncion())
                             .build()
                         )
                     .build(),

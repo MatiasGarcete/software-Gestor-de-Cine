@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.util.List;
 
 import com.sgc.Model.entity.Funcion;
-import com.sgc.Model.entity.Reserva;
 
 import lombok.Builder;
 import lombok.Data;

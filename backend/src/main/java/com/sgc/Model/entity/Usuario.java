@@ -46,6 +46,7 @@ public class Usuario implements Serializable {
 
     // Relación OneToMany con Reserva
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference("reserva-usuario") // Evita el ciclo de referencia al serializar
     private List<Reserva> reservas;
 }
 

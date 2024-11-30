@@ -42,6 +42,11 @@ public class Reserva implements Serializable{
     // Relación ManyToOne con Usuario
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idusuario", nullable = false)
-    @JsonBackReference // Evita el ciclo de referencia al serializar
+    @JsonBackReference("reserva-usuario") // Evita el ciclo de referencia al serializar
     private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idfuncion", nullable = false) // Relación hacia Calificacion
+    @JsonBackReference("reserva-funcion")
+    private Funcion funcion;
 }
