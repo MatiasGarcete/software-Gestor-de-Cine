@@ -49,5 +49,12 @@ public class RolImpl implements IRolService{
     public void delete(Rol rol) {
         rolDao.delete(rol);
     }
+
+    @Transactional
+    @Override
+    public boolean existsByNombre(String nombreRol) {
+        // Llama al método del DAO que hace la consulta
+        return rolDao.existsByNombreRol(nombreRol);
+    }
     
 }

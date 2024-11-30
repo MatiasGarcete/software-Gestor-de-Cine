@@ -29,7 +29,8 @@ public class RolController {
     public ResponseEntity<?> create(@RequestBody RolDto rolDto){
         Rol rolSave = null;
         try {
-            rolSave = rolService.save(rolDto);
+            if(!rolService.existsByNombre(rolDto.getNombreRol())){
+                rolSave = rolService.save(rolDto);
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje("Guadado Correctamente")
@@ -41,6 +42,15 @@ public class RolController {
                     )
                 .build(),
             HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>(
+                MensajeResponse.builder()
+                    .mensaje("Error. Este Rol ya existe")
+                    .objeto(null)
+                    .build(),
+                HttpStatus.CONFLICT);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -62,8 +72,18 @@ public class RolController {
         Rol rolDelete = null;
         try {
             rolDelete = rolService.findById(id);
-            rolService.delete(rolDelete);
-            return new ResponseEntity<>(rolDelete, HttpStatus.NO_CONTENT);
+            if(rolDelete.getUsuarios().isEmpty()){
+                rolService.delete(rolDelete);
+                return new ResponseEntity<>(rolDelete, HttpStatus.NO_CONTENT);
+            }
+            else{
+                return new ResponseEntity<>(
+                MensajeResponse.builder()
+                    .mensaje("No se puede Eliminar este rol, tiene usuario vinculados!")
+                    .objeto(null)
+                    .build(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()

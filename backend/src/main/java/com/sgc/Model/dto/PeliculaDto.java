@@ -18,4 +18,7 @@ public class PeliculaDto implements Serializable {
     
     private Date anioEstreno;
     private Integer duracion;
+
+    private Integer idGenero;
+    private Integer idCalificacion;
 }

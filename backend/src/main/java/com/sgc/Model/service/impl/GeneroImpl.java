@@ -47,5 +47,12 @@ public class GeneroImpl implements IGeneroService{
     public boolean existsBy(Integer id) {
         return generoDao.existsById(id);
     }
+
+    @Transactional
+    @Override
+    public boolean existsByGenero(String genero){
+        // Llama al método del DAO que hace la consulta
+        return generoDao.existsByGenero(genero);
+    }
     
 }

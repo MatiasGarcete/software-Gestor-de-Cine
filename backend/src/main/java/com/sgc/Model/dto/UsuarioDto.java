@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.sgc.Model.entity.Reserva;
 
 
 @Data
@@ -18,5 +21,7 @@ public class UsuarioDto implements Serializable {
     private String password;
     private String correo;
 
+    private Integer idRol;  // Relacion con la Tabla Rol
+    private List<Reserva> reservas;  // Relación con las reservas
 }
 

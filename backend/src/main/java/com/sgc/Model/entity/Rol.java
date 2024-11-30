@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +24,9 @@ public class Rol implements Serializable {
 
     @Column(name = "nombrerol", length = 45, nullable = false)
     private String nombreRol;
+
+    @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY) // OneToMany, con el mapeo hacia la entidad Usuario
+    private List<Usuario> usuarios; // Aquí agregamos la lista de usuarios asociados a este rol
+
 }
 

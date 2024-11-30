@@ -1,12 +1,17 @@
 package com.sgc.Model.entity;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +32,11 @@ public class Genero implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idgenero;
 
-    @Column(name = "genero", length = 45)
+    @Column(name = "nombreGenero", length = 45)
     private String genero;
+
+    @OneToMany(mappedBy = "genero", fetch = FetchType.LAZY)
+    @JsonManagedReference("pelicula-genero")
+    private List<Pelicula> peliculas;
     
 }

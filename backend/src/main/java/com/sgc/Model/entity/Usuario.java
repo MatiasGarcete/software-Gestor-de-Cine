@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Data
@@ -36,10 +39,13 @@ public class Usuario implements Serializable {
     @Column(name = "correo", length = 45, nullable = false)
     private String correo;
 
-    // @ManyToOne(fetch = FetchType.LAZY) // Relación muchos a uno
-    // @JoinColumn(name = "idrol", nullable = false) // Clave foránea
-    // private Rol rol;
+    @ManyToOne(fetch = FetchType.LAZY) // Relación Muchos a Uno
+    @JoinColumn(name = "idrol", nullable = false) // Clave foránea
+    @JsonBackReference // Evita el ciclo de referencia al serializar
+    private Rol rol;
 
-    // Getters y setters
+    // Relación OneToMany con Reserva
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reserva> reservas;
 }
 

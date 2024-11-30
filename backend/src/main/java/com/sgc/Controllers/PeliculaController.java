@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sgc.Model.Payload.MensajeResponse;
 import com.sgc.Model.dto.PeliculaDto;
 import com.sgc.Model.entity.Pelicula;
+import com.sgc.Model.service.ICalificacionService;
+import com.sgc.Model.service.IGeneroService;
 import com.sgc.Model.service.IPeliculaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +27,43 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PeliculaController {
     @Autowired
     private IPeliculaService peliculaService;
+    @Autowired
+    private IGeneroService generoService;
+    @Autowired
+    private ICalificacionService calificacionService;
 
     @PostMapping("pelicula")
     public ResponseEntity<?> create(@RequestBody PeliculaDto peliculaDto) { 
         Pelicula peliculaSave = null;
         try {
-            peliculaSave = peliculaService.save(peliculaDto);
-            return new ResponseEntity<>(
+            if(generoService.existsBy(peliculaDto.getIdGenero()) && calificacionService.existsBy(peliculaDto.getIdCalificacion())){
+                peliculaSave = peliculaService.save(peliculaDto);
+                return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                        .mensaje("Guadado Correctamente")
+                        .objeto(
+                            PeliculaDto.builder()
+                                .idPelicula(peliculaSave.getIdPelicula())
+                                .nombrePelicula(peliculaSave.getNombrePelicula())
+                                .tituloOriginal(peliculaSave.getTituloOriginal())
+                                .duracion(peliculaSave.getDuracion())
+                                .descripcion(peliculaSave.getDescripcion())
+                                .anioEstreno(peliculaSave.getAnioEstreno())
+                                .idGenero(peliculaDto.getIdGenero())
+                                .idCalificacion(peliculaDto.getIdCalificacion())
+                            .build()
+                        )
+                    .build(),
+                    HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>(
                 MensajeResponse.builder()
-                    .mensaje("Guadado Correctamente")
-                    .objeto(
-                        PeliculaDto.builder()
-                            .idPelicula(peliculaSave.getIdPelicula())
-                            .nombrePelicula(peliculaSave.getNombrePelicula())
-                            .tituloOriginal(peliculaSave.getTituloOriginal())
-                            .duracion(peliculaSave.getDuracion())
-                            .descripcion(peliculaSave.getDescripcion())
-                        .anioEstreno(peliculaSave.getAnioEstreno())
-                        .build()
-                    )
+                    .mensaje("El genero o calificacion que intenta vincular a la pelicula no existe!")
+                    .objeto(null)
                 .build(),
-                HttpStatus.CREATED);
+                HttpStatus.METHOD_NOT_ALLOWED);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -74,6 +92,8 @@ public class PeliculaController {
                             .duracion(peliculaSave.getDuracion())
                             .descripcion(peliculaSave.getDescripcion())
                             .anioEstreno(peliculaSave.getAnioEstreno())
+                            .idGenero(peliculaSave.getGenero().getIdgenero())
+                            .idCalificacion(peliculaSave.getCalificacion().getIdcalificacion())
                         .build()
                     )
                 .build(),
@@ -137,6 +157,7 @@ public class PeliculaController {
                         .duracion(pelicula.getDuracion())
                         .descripcion(pelicula.getDescripcion())
                         .anioEstreno(pelicula.getAnioEstreno())
+                        .idGenero(pelicula.getGenero().getIdgenero())
                     .build()
             ).build(),
             HttpStatus.OK

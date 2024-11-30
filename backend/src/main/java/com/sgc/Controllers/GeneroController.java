@@ -30,6 +30,7 @@ public class GeneroController {
     public ResponseEntity<?> create(@RequestBody GeneroDto generoDto){
         Genero generoSave = null;
         try {
+            if(!generoService.existsByGenero(generoDto.getGenero())){
             generoSave = generoService.save(generoDto);
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -42,6 +43,14 @@ public class GeneroController {
                     )
                     .build(),
                 HttpStatus.CREATED);
+            }else{
+                return new ResponseEntity<>(
+                MensajeResponse.builder()
+                    .mensaje("Error. Este Genero ya existe")
+                    .objeto(null)
+                    .build(),
+                HttpStatus.CONFLICT);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()

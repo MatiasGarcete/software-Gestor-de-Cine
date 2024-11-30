@@ -9,4 +9,5 @@ public interface ICalificacionService {
     Iterable<Calificacion> findAll();
     void delete(Calificacion calificacion);
     boolean existsBy(Integer id);
+    boolean existsByCalificacion(String nombre);
 }

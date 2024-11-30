@@ -6,7 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sgc.Model.dao.UsuarioDao;
 import com.sgc.Model.dto.UsuarioDto;
+import com.sgc.Model.entity.Rol;
 import com.sgc.Model.entity.Usuario;
+import com.sgc.Model.service.IRolService;
 import com.sgc.Model.service.IUsuarioService;
 
 @Service
@@ -15,6 +17,8 @@ public class UsuarioImpl implements IUsuarioService{
     //nos brinda control a la hora de inyectar dependecias o instancias que se almacena en Spring
     @Autowired 
     private UsuarioDao usuarioDao;
+    @Autowired
+    private IRolService rolService;
 
     @Override
     public boolean existsBy(Integer id){
@@ -24,6 +28,8 @@ public class UsuarioImpl implements IUsuarioService{
     @Transactional
     @Override
     public Usuario save(UsuarioDto usuarioDto) {
+        // Buscar el rol desde la base de datos usando el idRol
+        Rol rol = rolService.findById(usuarioDto.getIdRol()); 
         //Setteamos todos los valores que vienen del UsuarioDto para generar un Objeto Usuario Entity
         Usuario usuario = Usuario.builder()
             .idUsuario(usuarioDto.getIdUsuario())
@@ -31,6 +37,7 @@ public class UsuarioImpl implements IUsuarioService{
             .apellido(usuarioDto.getApellido())
             .password(usuarioDto.getPassword())
             .correo(usuarioDto.getCorreo())
+            .rol(rol)
             .build();
         return usuarioDao.save(usuario);
     }

@@ -9,4 +9,5 @@ public interface IGeneroService {
     Iterable<Genero> findAll();
     void delete(Genero genero);
     boolean existsBy(Integer id);
+    boolean existsByGenero(String genero);
 }

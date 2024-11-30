@@ -10,4 +10,5 @@ public interface IRolService {
     Rol findById(Integer id);
     void delete(Rol rol);
     boolean existsBy(Integer id);
+    boolean existsByNombre(String nombre);
 }

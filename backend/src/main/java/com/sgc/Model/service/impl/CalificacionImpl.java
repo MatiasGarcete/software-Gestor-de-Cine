@@ -49,5 +49,10 @@ public class CalificacionImpl implements ICalificacionService{
         return calificacionDao.existsById(id);
     }
 
+    @Override
+    public boolean existsByCalificacion(String nombre) {
+        return calificacionDao.existsByCalificacion(nombre);
+    }
+
 
 }

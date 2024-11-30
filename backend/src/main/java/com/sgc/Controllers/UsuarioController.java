@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sgc.Model.Payload.MensajeResponse;
 import com.sgc.Model.dto.UsuarioDto;
 import com.sgc.Model.entity.Usuario;
+import com.sgc.Model.service.IRolService;
 import com.sgc.Model.service.IUsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,28 +26,41 @@ public class UsuarioController {
     //llamamos a nuestro servicio
     @Autowired
     private IUsuarioService usuarioService;
+    @Autowired
+    private IRolService rolService;  // Accede al repositorio de Roles
 
     /**METODOS DEL IUsuario **/
     @PostMapping("usuario")
     public ResponseEntity<?> create(@RequestBody UsuarioDto usuarioDto) {
         Usuario usuarioSave = null;
         try {
-            usuarioSave = usuarioService.save(usuarioDto);
-
-            return new ResponseEntity<>(
+            if(rolService.existsBy(usuarioDto.getIdRol())){
+                usuarioSave = usuarioService.save(usuarioDto);
+                return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                        .mensaje("Guadado Correctamente")
+                        .objeto(
+                            UsuarioDto.builder()
+                                .idUsuario(usuarioSave.getIdUsuario())
+                                .nombre(usuarioSave.getNombre())
+                                .apellido(usuarioSave.getApellido())
+                                .password(usuarioSave.getPassword())
+                                .correo(usuarioSave.getCorreo())
+                                .idRol(usuarioDto.getIdRol())
+                            .build()
+                        )
+                        .build(),
+                    HttpStatus.CREATED
+                );
+            }
+            else{
+                return new ResponseEntity<>(
                 MensajeResponse.builder()
-                    .mensaje("Guadado Correctamente")
-                    .objeto(
-                        UsuarioDto.builder()
-                            .idUsuario(usuarioSave.getIdUsuario())
-                            .nombre(usuarioSave.getNombre())
-                            .apellido(usuarioSave.getApellido())
-                            .password(usuarioSave.getPassword())
-                            .correo(usuarioSave.getCorreo())
-                        .build()
-                    )
+                    .mensaje("La id del Rol no exite!")
+                    .objeto(null)
                     .build(),
-                HttpStatus.CREATED);
+                HttpStatus.NOT_FOUND);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -75,6 +89,7 @@ public class UsuarioController {
                                 .apellido(usuarioUpdate.getApellido())
                                 .password(usuarioUpdate.getPassword())
                                 .correo(usuarioUpdate.getCorreo())
+                                .idRol(usuarioDto.getIdRol())
                             .build()
                         )
                         .build(),
@@ -132,6 +147,7 @@ public class UsuarioController {
                 HttpStatus.NOT_FOUND
             );
         }
+
         return new ResponseEntity<>(
             MensajeResponse.builder()
                 .mensaje("")
@@ -142,6 +158,8 @@ public class UsuarioController {
                         .apellido(usuario.getApellido())
                         .password(usuario.getPassword())
                         .correo(usuario.getCorreo())
+                        .idRol(usuario.getRol().getIdRol())
+                        .reservas(usuario.getReservas())
                     .build()
                 )
                 .build(),

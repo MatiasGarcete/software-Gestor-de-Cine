@@ -31,18 +31,28 @@ public class CalificacionController {
     public ResponseEntity<?> create(@RequestBody CalificacionDto calificacionDto) {
         Calificacion calificacionSave = null;
         try {
-            calificacionSave = calificacionService.save(calificacionDto);
-            return new ResponseEntity<>(
+            if(!calificacionService.existsByCalificacion(calificacionDto.getCalificacion())){
+                calificacionSave = calificacionService.save(calificacionDto);
+                return new ResponseEntity<>(
+                    MensajeResponse.builder()
+                        .mensaje("Guardado Correctamente!")
+                        .objeto(
+                            CalificacionDto.builder()
+                                .idcalificacion(calificacionSave.getIdcalificacion())
+                                .calificacion(calificacionSave.getCalificacion())
+                            .build()
+                        )
+                        .build(),
+                        HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>(
                 MensajeResponse.builder()
-                    .mensaje("Guardado Correctamente!")
-                    .objeto(
-                        CalificacionDto.builder()
-                            .idcalificacion(calificacionSave.getIdcalificacion())
-                            .calificacion(calificacionSave.getCalificacion())
-                        .build()
-                    )
+                    .mensaje("La calificacion que quiere crear ya existe")
+                    .objeto(null)
                     .build(),
-                    HttpStatus.CREATED);
+                HttpStatus.METHOD_NOT_ALLOWED);
+            }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
