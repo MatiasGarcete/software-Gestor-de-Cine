@@ -28,6 +28,8 @@ public class PeliculaImpl implements IPeliculaService{
             .nombrePelicula(peliculaDto.getNombrePelicula())
             .tituloOriginal(peliculaDto.getTituloOriginal())
             .duracion(peliculaDto.getDuracion())
+            .anioEstreno(peliculaDto.getAnioEstreno())
+            .descripcion(peliculaDto.getDescripcion())
         .build();
 
         return peliculaDao.save(pelicula);

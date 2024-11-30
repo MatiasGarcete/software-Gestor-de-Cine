@@ -1,6 +1,7 @@
 package com.sgc.Model.entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,11 @@ public class Pelicula implements Serializable{
     private String tituloOriginal;
     @Column(name = "duracion", nullable = false)
     private Integer duracion;
+    
+    @Column(name = "descripcion", nullable = false)
+    private String descripcion;
+    @Column(name = "anioEstreno", nullable = false)
+    private Date anioEstreno;
     
 }
 

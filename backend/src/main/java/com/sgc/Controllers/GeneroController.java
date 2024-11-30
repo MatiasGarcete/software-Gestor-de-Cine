@@ -1,82 +1,75 @@
 package com.sgc.Controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.sgc.Model.Payload.MensajeResponse;
-import com.sgc.Model.dto.PeliculaDto;
-import com.sgc.Model.entity.Pelicula;
-import com.sgc.Model.service.IPeliculaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sgc.Model.Payload.MensajeResponse;
+import com.sgc.Model.dto.GeneroDto;
+import com.sgc.Model.entity.Genero;
+import com.sgc.Model.service.IGeneroService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
+
 @RestController
 @RequestMapping("/api/v1")
-public class PeliculaController {
+public class GeneroController {
     @Autowired
-    private IPeliculaService peliculaService;
+    private IGeneroService generoService;
 
-    @PostMapping("pelicula")
-    public ResponseEntity<?> create(@RequestBody PeliculaDto peliculaDto) { 
-        Pelicula peliculaSave = null;
+    @PostMapping("genero")
+    public ResponseEntity<?> create(@RequestBody GeneroDto generoDto){
+        Genero generoSave = null;
         try {
-            peliculaSave = peliculaService.save(peliculaDto);
+            generoSave = generoService.save(generoDto);
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje("Guadado Correctamente")
                     .objeto(
-                        PeliculaDto.builder()
-                            .idPelicula(peliculaSave.getIdPelicula())
-                            .nombrePelicula(peliculaSave.getNombrePelicula())
-                            .tituloOriginal(peliculaSave.getTituloOriginal())
-                            .duracion(peliculaSave.getDuracion())
-                            .descripcion(peliculaSave.getDescripcion())
-                        .anioEstreno(peliculaSave.getAnioEstreno())
+                        GeneroDto.builder()
+                            .idgenero(generoSave.getIdgenero())
+                            .genero(generoSave.getGenero())
                         .build()
                     )
-                .build(),
+                    .build(),
                 HttpStatus.CREATED);
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje(exDT.getMessage())
                     .objeto(null)
-                .build(),
+                    .build(),
                 HttpStatus.METHOD_NOT_ALLOWED);
-        }   
+        }
     }
-    @PutMapping("pelicula/{id}")
-    public ResponseEntity<?> update(@RequestBody PeliculaDto peliculaDto, @PathVariable Integer id) {
-        Pelicula peliculaSave = null;
+
+    @PutMapping("genero/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody GeneroDto generoDto) {
+        Genero generoSave = null;
         try {
-            if(peliculaService.existsBy(id)){
-                peliculaDto.setIdPelicula(id);
-                peliculaSave = peliculaService.save(peliculaDto);
+            if (generoService.existsBy(id)) {
+                generoDto.setIdgenero(id);
+                generoSave = generoService.save(generoDto);
 
                 return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje("Guadado Correctamente")
                     .objeto(
-                        PeliculaDto.builder()
-                            .idPelicula(peliculaSave.getIdPelicula())
-                            .nombrePelicula(peliculaSave.getNombrePelicula())
-                            .tituloOriginal(peliculaSave.getTituloOriginal())
-                            .duracion(peliculaSave.getDuracion())
-                            .descripcion(peliculaSave.getDescripcion())
-                            .anioEstreno(peliculaSave.getAnioEstreno())
+                        GeneroDto.builder()
+                            .idgenero(generoSave.getIdgenero())
+                            .genero(generoDto.getGenero())
                         .build()
                     )
-                .build(),
+                    .build(),
                 HttpStatus.CREATED);
             }else{
                 return new ResponseEntity<>(
@@ -93,16 +86,16 @@ public class PeliculaController {
                     .objeto(null)
                     .build(),
                 HttpStatus.METHOD_NOT_ALLOWED);
-        } 
+        }
     }
 
-    @DeleteMapping("pelicula/{id}")
+    @DeleteMapping("genero/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
-        Pelicula peliculaDelete = null;
+        Genero generoDelete = null;
         try {
-            peliculaDelete = peliculaService.findById(id);
-            peliculaService.delete(peliculaDelete);
-            return new ResponseEntity<>(peliculaDelete, HttpStatus.NO_CONTENT);
+            generoDelete = generoService.findById(id);
+            generoService.delete(generoDelete);
+            return new ResponseEntity<>(generoDelete, HttpStatus.NO_CONTENT);
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -114,15 +107,15 @@ public class PeliculaController {
         }
     }
 
-    @GetMapping("pelicula/{id}")
+    @GetMapping("genero/{id}")
     public ResponseEntity<?> showById(@PathVariable Integer id) {
-        Pelicula pelicula = peliculaService.findById(id);
-        if(pelicula == null){
+        Genero genero = generoService.findById(id);
+        if(genero == null){
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje("El registro que intenta buscar, no existe!!")
                     .objeto(null)
-                    .build(),
+                .build(),
                 HttpStatus.NOT_FOUND
             );
         }
@@ -130,21 +123,19 @@ public class PeliculaController {
             MensajeResponse.builder()
                 .mensaje("")
                 .objeto(
-                    PeliculaDto.builder()
-                        .idPelicula(pelicula.getIdPelicula())
-                        .nombrePelicula(pelicula.getNombrePelicula())
-                        .tituloOriginal(pelicula.getTituloOriginal())
-                        .duracion(pelicula.getDuracion())
-                        .descripcion(pelicula.getDescripcion())
-                        .anioEstreno(pelicula.getAnioEstreno())
+                    GeneroDto.builder()
+                        .idgenero(genero.getIdgenero())
+                        .genero(genero.getGenero())
                     .build()
-            ).build(),
+                )
+            .build(),
             HttpStatus.OK
         );
     }
     
-    @GetMapping("pelicula")
-    public Iterable<Pelicula> findAll() {
-        return peliculaService.findAll();
+    @GetMapping("genero")
+    public Iterable<Genero> findAll() {
+        return generoService.findAll();
     }
+    
 }
