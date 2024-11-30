@@ -38,6 +38,7 @@ public class UsuarioImpl implements IUsuarioService{
             .password(usuarioDto.getPassword())
             .correo(usuarioDto.getCorreo())
             .rol(rol)
+            .reservas(usuarioDto.getReservas())
             .build();
         return usuarioDao.save(usuario);
     }

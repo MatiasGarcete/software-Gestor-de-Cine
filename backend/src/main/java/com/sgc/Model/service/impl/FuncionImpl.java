@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sgc.Model.dao.FuncionDao;
 import com.sgc.Model.dto.FuncionDto;
 import com.sgc.Model.entity.Funcion;
+import com.sgc.Model.entity.Pelicula;
 import com.sgc.Model.service.IFuncionService;
+import com.sgc.Model.service.IPeliculaService;
 
 
 @Service
@@ -15,16 +17,21 @@ public class FuncionImpl implements IFuncionService {
 
     @Autowired
     private FuncionDao funcionDao;
+    @Autowired
+    private IPeliculaService peliculaService;
+    
 
     @Transactional
     @Override
     public Funcion save(FuncionDto funcionDto) {
+        Pelicula pelicula = peliculaService.findById(funcionDto.getIdPelicula());
         Funcion funcion = Funcion.builder()
             .idfuncion(funcionDto.getIdfuncion())
             .capacidad(funcionDto.getCapacidad())
             .fecha(funcionDto.getFecha())
             .hora(funcionDto.getHora())
             .precio(funcionDto.getPrecio())
+            .pelicula(pelicula)
         .build();
 
         return funcionDao.save(funcion);

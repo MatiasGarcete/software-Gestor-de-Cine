@@ -2,9 +2,12 @@ package com.sgc.Model.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,6 +51,11 @@ public class Pelicula implements Serializable{
 
     // //Relaciones
     // En Pelicula.java
+    @OneToMany(mappedBy = "pelicula", fetch = FetchType.LAZY, cascade = CascadeType.ALL) 
+    @JsonManagedReference("pelicula-funcion") // Maneja la serialización JSON
+    private List<Funcion> funciones; // Lista de funciones asociadas a esta película
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idgenero", nullable = false) // Relación hacia Genero
     @JsonBackReference("pelicula-genero")
@@ -56,5 +65,6 @@ public class Pelicula implements Serializable{
     @JoinColumn(name = "idcalificacion", nullable = false) // Relación hacia Calificacion
     @JsonBackReference("pelicula-calificacion")
     private Calificacion calificacion;
+
 }
 

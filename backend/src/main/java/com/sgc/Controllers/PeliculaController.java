@@ -94,6 +94,7 @@ public class PeliculaController {
                             .anioEstreno(peliculaSave.getAnioEstreno())
                             .idGenero(peliculaSave.getGenero().getIdgenero())
                             .idCalificacion(peliculaSave.getCalificacion().getIdcalificacion())
+                            .funcion(peliculaSave.getFunciones())
                         .build()
                     )
                 .build(),
@@ -158,6 +159,8 @@ public class PeliculaController {
                         .descripcion(pelicula.getDescripcion())
                         .anioEstreno(pelicula.getAnioEstreno())
                         .idGenero(pelicula.getGenero().getIdgenero())
+                        .idCalificacion(pelicula.getCalificacion().getIdcalificacion())
+                        .funcion(pelicula.getFunciones())
                     .build()
             ).build(),
             HttpStatus.OK

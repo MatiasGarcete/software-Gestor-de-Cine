@@ -2,6 +2,10 @@ package com.sgc.Model.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
+
+import com.sgc.Model.entity.Funcion;
+import com.sgc.Model.entity.Reserva;
 
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +25,6 @@ public class PeliculaDto implements Serializable {
 
     private Integer idGenero;
     private Integer idCalificacion;
+    private List<Funcion> funcion;  // Relación con las reservas
+
 }
