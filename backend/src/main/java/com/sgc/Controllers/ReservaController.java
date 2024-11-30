@@ -8,41 +8,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sgc.Model.Payload.MensajeResponse;
-import com.sgc.Model.dto.CalificacionDto;
-import com.sgc.Model.entity.Calificacion;
-import com.sgc.Model.service.ICalificacionService;
+import com.sgc.Model.dto.ReservaDto;
+import com.sgc.Model.entity.Reserva;
+import com.sgc.Model.service.IReservaService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/api/v1")
-public class CalificacionController {
+@RequestMapping("api/v1")
+public class ReservaController {
     @Autowired
-    private ICalificacionService calificacionService;
+    private IReservaService reservaService;
 
-    @PostMapping("calificacion")
-    public ResponseEntity<?> create(@RequestBody CalificacionDto calificacionDto) {
-        Calificacion calificacionSave = null;
+    @PostMapping("reserva")
+    public ResponseEntity<?> create(@RequestBody ReservaDto reservaDto) {
+        Reserva reservaSave = null;
         try {
-            calificacionSave = calificacionService.save(calificacionDto);
+            reservaSave = reservaService.save(reservaDto);
             return new ResponseEntity<>(
                 MensajeResponse.builder()
-                    .mensaje("Guardado Correctamente!")
-                    .objeto(
-                        CalificacionDto.builder()
-                            .idcalificacion(calificacionSave.getIdcalificacion())
-                            .calificacion(calificacionSave.getCalificacion())
-                        .build()
-                    )
+                        .mensaje("Guardado Correctamente!")
+                        .objeto(
+                            ReservaDto.builder()
+                                .idreserva(reservaSave.getIdreserva())
+                                .fechaReserva(reservaSave.getFechaReserva())
+                                .cantidadEntradas(reservaSave.getCantidadEntradas())
+                            .build()
+                        )
                     .build(),
-                    HttpStatus.CREATED);
+                HttpStatus.CREATED
+            );
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
@@ -53,24 +53,25 @@ public class CalificacionController {
         }
     }
     
-    @PutMapping("calificacion/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody CalificacionDto calificacionDto) {
-        Calificacion calificacionSave = null;
+    @PutMapping("reserva/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody ReservaDto reservaDto) {
+        Reserva reservaSave = null;
         try {
-            if(calificacionService.existsBy(id)){
-                calificacionDto.setIdcalificacion(id);
-                calificacionSave = calificacionService.save(calificacionDto);
-
+            if(reservaService.existsBy(id)){
+                reservaDto.setIdreserva(id);
+                reservaSave = reservaService.save(reservaDto);
                 return new ResponseEntity<>(
                     MensajeResponse.builder()
                         .mensaje("Guardado Correctamente!")
                         .objeto(
-                            CalificacionDto.builder()
-                                .idcalificacion(calificacionSave.getIdcalificacion())
-                                .calificacion(calificacionSave.getCalificacion())
-                            .build())
-                        .build(),
-                    HttpStatus.CREATED
+                            ReservaDto.builder()
+                                .idreserva(reservaSave.getIdreserva())
+                                .fechaReserva(reservaSave.getFechaReserva())
+                                .cantidadEntradas(reservaSave.getCantidadEntradas())
+                            .build()
+                        )
+                    .build(),
+                HttpStatus.CREATED
                 );
             }
             else{
@@ -92,52 +93,53 @@ public class CalificacionController {
         }
     }
 
-    @DeleteMapping("calificacion/{id}")
+    @DeleteMapping("reserva/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
-        Calificacion calificacionDelete = null;
+        Reserva reservaDelete = null;
         try {
-            calificacionDelete = calificacionService.findById(id);
-            calificacionService.delete(calificacionDelete);
-            return new ResponseEntity<>(calificacionDelete, HttpStatus.NO_CONTENT);
+            reservaDelete = reservaService.findById(id);
+            reservaService.delete(reservaDelete);
+            return new ResponseEntity<>(reservaDelete, HttpStatus.NO_CONTENT);
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje(exDT.getMessage())
                     .objeto(null)
                     .build(),
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+                HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("calificacion/{id}")
-    public ResponseEntity<?> showById(@PathVariable Integer id){
-        Calificacion calificacion = calificacionService.findById(id);
-        if (calificacion == null) {
+    @GetMapping("reserva/{id}")
+    public ResponseEntity<?> showById(@PathVariable Integer id) {
+        Reserva reserva = reservaService.findById(id);
+        if(reserva == null){
             return new ResponseEntity<>(
                 MensajeResponse.builder()
                     .mensaje("El registro que intenta buscar, no existe!!")
                     .objeto(null)
-                .build(),
+                    .build(),
                 HttpStatus.NOT_FOUND
             );
-        }
+        } 
         return new ResponseEntity<>(
             MensajeResponse.builder()
                 .mensaje("")
                 .objeto(
-                    CalificacionDto.builder()
-                        .idcalificacion(calificacion.getIdcalificacion())
-                        .calificacion(calificacion.getCalificacion())
-                    .build())
-            .build(),
+                    ReservaDto.builder()
+                        .idreserva(reserva.getIdreserva())
+                        .fechaReserva(reserva.getFechaReserva())
+                        .cantidadEntradas(reserva.getCantidadEntradas())
+                    .build()
+                )
+                .build(),
             HttpStatus.OK
         );
     }
-
-    @GetMapping("calificacion")
-    public Iterable<Calificacion> findAll() {
-        return calificacionService.findAll();
+    
+    @GetMapping("reserva")
+    public Iterable<Reserva> showAll() {
+        return reservaService.findAll();
     }
     
 }
