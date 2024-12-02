@@ -39,6 +39,9 @@ public class Reserva implements Serializable{
     @Column(name = "cantidadEntradas")
     private Integer cantidadEntradas;
 
+    @Column(name = "total")
+    private float total;
+
     // Relación ManyToOne con Usuario
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idusuario", nullable = false)

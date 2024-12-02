@@ -41,6 +41,7 @@ public class PeliculaImpl implements IPeliculaService{
             .duracion(peliculaDto.getDuracion())
             .anioEstreno(peliculaDto.getAnioEstreno())
             .descripcion(peliculaDto.getDescripcion())
+            .portada(peliculaDto.getPortada())
             .genero(genero)
             .calificacion(calificacion)
         .build();

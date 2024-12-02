@@ -34,6 +34,7 @@ public class ReservaImpl implements IReservaService{
             .idreserva(reservaDto.getIdreserva())
             .fechaReserva(reservaDto.getFechaReserva())
             .cantidadEntradas(reservaDto.getCantidadEntradas())
+            .total(reservaDto.getTotal())
             .usuario(usuario)
             .funcion(funcion)
         .build();

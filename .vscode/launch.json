@@ -1,5 +1,15 @@
 {
     "configurations": [
+        
+
+
+        {
+            "type": "java",
+            "name": "CineApiRestApplication",
+            "request": "launch",
+            "mainClass": "com.sgc.CineApiRestApplication",
+            "projectName": ""
+        },
         {
             "type": "java",
             "name": "Spring Boot-CineApiRestApplication<cine-api-rest>",

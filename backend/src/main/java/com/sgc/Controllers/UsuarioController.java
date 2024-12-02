@@ -7,12 +7,15 @@ import com.sgc.Model.entity.Usuario;
 import com.sgc.Model.service.IRolService;
 import com.sgc.Model.service.IUsuarioService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -169,9 +172,40 @@ public class UsuarioController {
     }
 
     @GetMapping("usuario")
-    @ResponseStatus(HttpStatus.OK) //Estado de la solicitud 
-    public Iterable<Usuario> showAll() {
-        return usuarioService.findAll();
+    public ResponseEntity<?> showAll() {
+        //Convertimos un tipo de Iterator a List
+        List<Usuario> usuarios = StreamSupport.stream(
+            usuarioService.findAll().spliterator(),
+            false).collect(Collectors.toList());
+
+        //En el caso de que no tengamos registros
+        if(usuarios.isEmpty()){
+            return new ResponseEntity<>(
+                MensajeResponse.builder()
+                .mensaje("No se encontraron registros!")
+                .objeto(null)
+                .build(),
+                HttpStatus.NOT_FOUND
+            );
+        }
+        List<UsuarioDto> usuarioDtos = usuarios.stream()
+            .map(usuario -> UsuarioDto.builder()
+                .idUsuario(usuario.getIdUsuario())
+                .nombre(usuario.getNombre())
+                .apellido(usuario.getApellido())
+                .password(usuario.getPassword())
+                .correo(usuario.getCorreo())
+                .idRol(usuario.getRol().getIdRol())
+                .build()
+            ).toList();
+        
+        return new ResponseEntity<>(
+            MensajeResponse.builder()
+            .mensaje("")
+            .objeto(usuarioDtos)
+            .build(),
+            HttpStatus.OK  
+        );
     }
     
 

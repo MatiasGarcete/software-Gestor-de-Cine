@@ -37,17 +37,24 @@ public class Pelicula implements Serializable{
     @Column(name = "idPelicula", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPelicula;
+
     @Column(name = "nombrePelicula", nullable = false)
     private String nombrePelicula;
+
     @Column(name = "tituloOriginal", nullable = false)
     private String tituloOriginal;
+
     @Column(name = "duracion", nullable = false)
     private Integer duracion;
     
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
+
     @Column(name = "anioEstreno", nullable = false)
-    private Date anioEstreno;
+    private Integer anioEstreno;
+
+    @Column(name = "portada")
+    private String portada;
 
     // //Relaciones
     // En Pelicula.java
