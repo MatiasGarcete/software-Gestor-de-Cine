@@ -17,8 +17,6 @@ import com.sgc.Model.service.IRolService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @RestController
 @RequestMapping("/api/v1")
 public class RolController {
@@ -29,27 +27,29 @@ public class RolController {
     public ResponseEntity<?> create(@RequestBody RolDto rolDto){
         Rol rolSave = null;
         try {
+            //Validamos si ya existe
             if(!rolService.existsByNombre(rolDto.getNombreRol())){
-                rolSave = rolService.save(rolDto);
-            return new ResponseEntity<>(
-                MensajeResponse.builder()
-                    .mensaje("Guadado Correctamente")
-                    .objeto(
-                        RolDto.builder()
-                            .idRol(rolSave.getIdRol())
-                            .nombreRol(rolSave.getNombreRol())
-                        .build()
-                    )
-                .build(),
-            HttpStatus.CREATED);
+                rolSave = rolService.save(rolDto); //Guardamos el rol
+                //Devolvemos un objeto
+                return new ResponseEntity<>( 
+                    MensajeResponse.builder()
+                        .mensaje("Guadado Correctamente")
+                        .objeto(
+                            RolDto.builder() //creamos un objeto RolDto y asignamos los datos
+                                .idRol(rolSave.getIdRol())
+                                .nombreRol(rolSave.getNombreRol())
+                            .build()
+                        )
+                    .build(),
+                HttpStatus.CREATED); //Esto de la solicitud
             }
             else{
                 return new ResponseEntity<>(
-                MensajeResponse.builder()
-                    .mensaje("Error. Este Rol ya existe")
-                    .objeto(null)
-                    .build(),
-                HttpStatus.CONFLICT);
+                    MensajeResponse.builder()
+                        .mensaje("Error. Este Rol ya existe")
+                        .objeto(null)
+                        .build(),
+                    HttpStatus.CONFLICT);
             }
         } catch (DataAccessException exDT) {
             return new ResponseEntity<>(

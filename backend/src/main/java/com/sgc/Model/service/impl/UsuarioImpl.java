@@ -61,5 +61,22 @@ public class UsuarioImpl implements IUsuarioService{
     public void delete(Usuario usuario) {
         usuarioDao.delete(usuario);
     }
+
+    @Transactional
+    @Override
+    public Usuario findByCorreo(String correo){
+        Usuario u = usuarioDao.buscarCorreo(correo);
+        return u;
+    }
+
+    @Transactional
+    @Override
+    public Usuario validacionLogin(String correo, String password){
+        Usuario usuario = findByCorreo(correo);
+        if (usuario != null && usuario.getPassword().equals(password)) {
+            return usuario;  // Si el correo y la contraseña coinciden, se devuelve el usuario
+        }
+        return null;  // Si no hay coincidencias, retorna null
+    }
     
 }

@@ -1,5 +1,7 @@
 package com.sgc.Model.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +60,12 @@ public class FuncionImpl implements IFuncionService {
     @Override
     public boolean existsBy(Integer id) {
         return funcionDao.existsById(id);
+    }
+
+    @Transactional
+    @Override
+    public List<Integer> getPeliculasIdsUnicos() {
+        return funcionDao.findDistinctPeliculasIds();
     }
     
 }

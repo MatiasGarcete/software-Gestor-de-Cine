@@ -1,7 +1,6 @@
 package com.sgc.Model.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;

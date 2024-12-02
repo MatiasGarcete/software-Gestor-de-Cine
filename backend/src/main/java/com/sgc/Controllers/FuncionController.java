@@ -1,5 +1,7 @@
 package com.sgc.Controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import com.sgc.Model.Payload.MensajeResponse;
 import com.sgc.Model.dto.FuncionDto;
 import com.sgc.Model.entity.Funcion;
 import com.sgc.Model.service.IFuncionService;
+
 
 @RestController
 @RequestMapping("api/v1")
@@ -141,6 +144,12 @@ public class FuncionController {
             HttpStatus.OK
         );
     }
+
+    @GetMapping("funciones/pelicula")
+    public List<Integer> obtenerIdsPeliculas() {
+        return funcionService.getPeliculasIdsUnicos();
+    }
+    
     
     @GetMapping("funcion")
     public Iterable<Funcion> showAll() {

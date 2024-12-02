@@ -8,6 +8,7 @@ import com.sgc.Model.service.IRolService;
 import com.sgc.Model.service.IUsuarioService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController //esta clase puede manejar peticiones GET - POST - PUT - DELETE
 @RequestMapping("/api/v1")
@@ -74,6 +76,28 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("usuario/login")
+    public ResponseEntity<?> validacionLogin(@RequestBody Map<String, String> data) {
+        System.out.println("Correo recibido: " + data.get("correo"));  // Verifica que el correo está siendo recibido correctamente
+        Usuario usuario = usuarioService.validacionLogin(data.get("correo"), data.get("password"));
+        System.out.println(usuario);
+        if (usuario == null) {
+            return new ResponseEntity<>(MensajeResponse.builder()
+                .mensaje("Los datos son incorrectos")
+                .objeto(null)
+                .build(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(MensajeResponse.builder()
+                .mensaje("El usuario inició sesión correctamente")
+                .objeto(UsuarioDto.builder()
+                    .nombre(usuario.getNombre())
+                    .correo(usuario.getCorreo())
+                    .build())
+                .build(), HttpStatus.OK);
+        }
+    }
+
+    
 
     @PutMapping("usuario/{id}")
     public ResponseEntity<?> update(@RequestBody UsuarioDto usuarioDto, @PathVariable Integer id){

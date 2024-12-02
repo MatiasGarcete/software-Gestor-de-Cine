@@ -16,6 +16,7 @@ public interface IUsuarioService {
      */
     Usuario findById(Integer id);
     Iterable<Usuario> findAll();
+    Usuario findByCorreo(String correo);
 
     /*****Elimina el usuario*****
      * Se podria hacer por medio de ID, pero este metodo toma
@@ -23,4 +24,5 @@ public interface IUsuarioService {
      *****/
     void delete(Usuario usuario);
     boolean existsBy(Integer id);
+    Usuario validacionLogin(String correo, String password);
 }

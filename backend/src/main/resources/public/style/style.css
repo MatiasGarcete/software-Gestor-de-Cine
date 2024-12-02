@@ -1,0 +1,5 @@
+#idCartelera{
+    display: grid; /* Activa el grid */
+    grid-template-columns: repeat(3, 1fr); /* Crea 4 columnas de igual tamaño */
+    gap: 10px; /* Espacio entre columnas y filas */
+}

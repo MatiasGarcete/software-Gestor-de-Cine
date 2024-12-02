@@ -1,13 +1,20 @@
 package com.sgc.Controllers;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
 public class CineController {
-    @RequestMapping("/")
+
+    @GetMapping("/")
     public String home() {
-        return "redirect:/index.html"; // Spring intentará buscar la vista "index"
+        return "index.html"; // Redirige a static/index.html
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "seccion/login.html"; // Redirige a static/login.html
+    }
+
 }
