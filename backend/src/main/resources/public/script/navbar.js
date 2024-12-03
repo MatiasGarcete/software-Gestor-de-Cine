@@ -31,25 +31,15 @@ async function cargarRol(idRol) {
 
         if (rol && rol.nombreRol === 'admin') {
             rolContainer.innerHTML = `
-            <div class="btn-group" role="group">
-                <button type="button" class="menu-btn btn btn-primary dropdown-toggle d-flex justify-content-center align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-                    Gestionar Películas
-                </button>
-                <ul class="dropdown-menu">
-                    <li><button class="dropdown-item">Crear</button></li>
-                    <li><a href="/gestion/pelicula" class="dropdown-item">Modificar</a></li>
-                    <li><button class="dropdown-item">Eliminar</button></li>
-                </ul>
+            <div class="btn-group"">
+                <a href="/gestionpelicula" class="btn link btn-primary d-flex justify-content-center align-items-center">
+                    <p class="m-0">Gestionar Películas</p>
+                </a>
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="menu-btn btn btn-primary dropdown-toggle d-flex justify-content-center align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-                    Gestionar Funciones
-                </button>
-                <ul class="dropdown-menu">
-                    <li><button class="dropdown-item">Crear</button></li>
-                    <li><button class="dropdown-item">Modificar</button></li>
-                    <li><button class="dropdown-item">Eliminar</button></li>
-                </ul>
+            <div class="btn-group"">
+                <a href="" class="btn link btn-primary d-flex justify-content-center align-items-center">
+                    <p class="m-0">Gestionar Funciones</p>
+                </a>
             </div>
             `;
         } else {
@@ -62,5 +52,5 @@ async function cargarRol(idRol) {
 
 function cerrarSession() {
     localStorage.removeItem("usuario");
-    location.reload(true);
+    window.location.href = "/";
 }

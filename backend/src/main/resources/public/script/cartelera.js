@@ -25,5 +25,5 @@ function validacionDeImagen(url){
             </div>    
         `
     }
-    return `<img href="${url}" alt="Portada de pelicula"/>`;
+    return `<img class="rounded-3" src=${url} alt="Portada de pelicula" width="200" height="300"/>`;
 }
