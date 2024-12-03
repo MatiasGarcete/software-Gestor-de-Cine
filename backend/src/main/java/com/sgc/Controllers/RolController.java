@@ -66,6 +66,27 @@ public class RolController {
         return rolService.findAll();
     }
     
+    @GetMapping("rol/{id}")
+    public ResponseEntity<?> findById(@PathVariable Integer id){
+        Rol rol = null;
+        try {
+            rol = rolService.findById(id);
+            if(rol != null) return new ResponseEntity<>(rol, HttpStatus.OK);
+            else return new ResponseEntity<>(
+                MensajeResponse.builder()
+                    .mensaje("El rol no existe")
+                    .objeto(null)
+                    .build(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (DataAccessException exDT) {
+            return new ResponseEntity<>(
+                MensajeResponse.builder()
+                    .mensaje(exDT.getMessage())
+                    .objeto(null)
+                    .build(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @DeleteMapping("rol/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){

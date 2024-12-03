@@ -16,13 +16,13 @@ public interface IUsuarioService {
      */
     Usuario findById(Integer id);
     Iterable<Usuario> findAll();
-    Usuario findByCorreo(String correo);
-
     /*****Elimina el usuario*****
      * Se podria hacer por medio de ID, pero este metodo toma
      * todo los datos y lo elimina
      *****/
     void delete(Usuario usuario);
     boolean existsBy(Integer id);
-    Usuario validacionLogin(String correo, String password);
+    // Usuario validarLogin(String correo, String password);
+    Integer buscarCorreo(String correo);
+
 }

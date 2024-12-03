@@ -78,24 +78,41 @@ public class UsuarioController {
 
     @PostMapping("usuario/login")
     public ResponseEntity<?> validacionLogin(@RequestBody Map<String, String> data) {
-        System.out.println("Correo recibido: " + data.get("correo"));  // Verifica que el correo está siendo recibido correctamente
-        Usuario usuario = usuarioService.validacionLogin(data.get("correo"), data.get("password"));
-        System.out.println(usuario);
-        if (usuario == null) {
-            return new ResponseEntity<>(MensajeResponse.builder()
+        // Imprimir los valores para depuración
+        System.out.println("Correo recibido: " + data.get("correo") + ", Contraseña recibida: " + data.get("password"));
+        
+        // Buscar la ID del usuario por correo
+        Integer usuarioId = usuarioService.buscarCorreo(data.get("correo"));
+                
+        // Si se encuentra el usuario
+        if (usuarioId != null) {
+            //buscamos al usuario
+            Usuario usuario = usuarioService.findById(usuarioId);
+            if(usuario.getPassword().equals(data.get("password"))){
+                // Si la contraseña coincide
+                return new ResponseEntity<>(MensajeResponse.builder()
+                .mensaje("Los datos son correctos")
+                .objeto(
+                    UsuarioDto.builder()
+                        .idUsuario(usuario.getIdUsuario())
+                        .nombre(usuario.getNombre())
+                        .apellido(usuario.getApellido())
+                        .password(usuario.getPassword())
+                        .correo(usuario.getCorreo())
+                        .idRol(usuario.getRol().getIdRol())
+                        .reservas(usuario.getReservas())
+                    .build()
+                )
+                .build(), HttpStatus.OK);
+            }
+        }
+        return new 
+            ResponseEntity<>(MensajeResponse.builder()
                 .mensaje("Los datos son incorrectos")
                 .objeto(null)
                 .build(), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(MensajeResponse.builder()
-                .mensaje("El usuario inició sesión correctamente")
-                .objeto(UsuarioDto.builder()
-                    .nombre(usuario.getNombre())
-                    .correo(usuario.getCorreo())
-                    .build())
-                .build(), HttpStatus.OK);
-        }
     }
+
 
     
 
