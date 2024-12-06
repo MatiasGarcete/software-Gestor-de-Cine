@@ -26,4 +26,14 @@ public class CineController {
     public String gestionFuncionMod() {
         return "seccion/funciones.html"; // Redirige a static/login.html
     }
+
+    @GetMapping("/funciones")
+    public String verFunciones() {
+        return "seccion/infoFunciones.html"; // Redirige a static/login.html
+    }
+    
+    @GetMapping("/entradas")
+    public String verReserva() {
+        return "seccion/verReservas.html"; // Redirige a static/login.html
+    }
 }

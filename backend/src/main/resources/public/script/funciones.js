@@ -97,7 +97,7 @@ funcionForm.addEventListener("submit", async (event) => {
         idfuncion: document.getElementById("idFuncion").value,
         capacidad: document.getElementById("capacidad").value,
         fecha: document.getElementById("fecha").value,
-        hora: document.getElementById("hora").value+":00",
+        hora: document.getElementById("hora").value,
         idPelicula: document.getElementById("nombrePelicula").value,
         precio: document.getElementById("precio").value,
 

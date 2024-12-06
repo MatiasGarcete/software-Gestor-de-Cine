@@ -4,7 +4,15 @@
     gap: 10px; /* Espacio entre columnas y filas */
 }
 
-
 .menu .link {
     height: 46px;
+}
+
+.clicPelicula{
+    border: none;
+    background-color: white;
+}
+
+.infoPelicula{
+    --bs-modal-width: 700px !important;
 }

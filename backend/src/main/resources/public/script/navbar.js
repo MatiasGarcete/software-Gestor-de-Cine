@@ -15,6 +15,7 @@ if (!localStorage.getItem("usuario")) {
         <ul class="dropdown-menu">
             <li>
                 <button class="dropdown-item" onClick="cerrarSession()">Cerrar Sesión</button>
+                <a class="dropdown-item" href="/entradas">Ver entradas</a>
             </li>
         </ul>
     </div>

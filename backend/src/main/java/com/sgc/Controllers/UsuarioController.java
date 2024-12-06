@@ -237,6 +237,7 @@ public class UsuarioController {
                 .password(usuario.getPassword())
                 .correo(usuario.getCorreo())
                 .idRol(usuario.getRol().getIdRol())
+                .reservas(usuario.getReservas())
                 .build()
             ).toList();
         
