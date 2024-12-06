@@ -21,4 +21,9 @@ public class CineController {
     public String gestionPeliculaMod() {
         return "seccion/pelicula.html"; // Redirige a static/login.html
     }
+
+    @GetMapping("/gestionfuncion")
+    public String gestionFuncionMod() {
+        return "seccion/funciones.html"; // Redirige a static/login.html
+    }
 }

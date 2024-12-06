@@ -37,7 +37,7 @@ async function cargarRol(idRol) {
                 </a>
             </div>
             <div class="btn-group"">
-                <a href="" class="btn link btn-primary d-flex justify-content-center align-items-center">
+                <a href="/gestionfuncion" class="btn link btn-primary d-flex justify-content-center align-items-center">
                     <p class="m-0">Gestionar Funciones</p>
                 </a>
             </div>

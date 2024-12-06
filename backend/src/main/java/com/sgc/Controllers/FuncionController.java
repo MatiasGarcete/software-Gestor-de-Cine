@@ -1,7 +1,11 @@
 package com.sgc.Controllers;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import org.hibernate.query.sqm.function.FunctionRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -132,13 +136,15 @@ public class FuncionController {
             MensajeResponse.builder()
                 .mensaje("")
                 .objeto(
-                    Funcion.builder()
+                    FuncionDto.builder()
                         .idfuncion(funcion.getIdfuncion())
-                        .capacidad(funcion.getCapacidad())
                         .fecha(funcion.getFecha())
                         .hora(funcion.getHora())
                         .precio(funcion.getPrecio())
-                    .build()
+                        .capacidad(funcion.getCapacidad())
+                        .idPelicula(funcion.getPelicula().getIdPelicula())
+                        .reservas(funcion.getReservas())
+                        .build()
                 )
                 .build(),
             HttpStatus.OK
@@ -152,7 +158,39 @@ public class FuncionController {
     
     
     @GetMapping("funcion")
-    public Iterable<Funcion> showAll() {
-        return funcionService.findAll();
+    public ResponseEntity<?> showAll() {
+        List<Funcion> funciones = StreamSupport.stream( 
+            funcionService.findAll().spliterator(),
+            false).collect(Collectors.toList());
+
+        if(funciones.isEmpty()){
+            return new ResponseEntity<>(
+                MensajeResponse.builder()
+                .mensaje("No se encontraron registros!")
+                .objeto(null)
+                .build(),
+                HttpStatus.NOT_FOUND
+            );
+        }
+
+        List<FuncionDto> funcionDto = funciones.stream()
+            .map(fun -> FuncionDto.builder()
+                .idfuncion(fun.getIdfuncion())
+                .fecha(fun.getFecha())
+                .hora(fun.getHora())
+                .precio(fun.getPrecio())
+                .capacidad(fun.getCapacidad())
+                .idPelicula(fun.getPelicula().getIdPelicula())
+                .reservas(fun.getReservas())
+                .build()
+            ).toList();
+
+        return new ResponseEntity<>(
+            MensajeResponse.builder()
+                .mensaje("")
+                .objeto(funcionDto)
+                .build(),
+            HttpStatus.OK  
+        );
     }
 }
